@@ -1,9 +1,14 @@
 from fastapi import FastAPI
+from app.database import get_connection
 
 app = FastAPI()
 
-app = FastAPI(title="Opt-in Message Manager API")
+@app.get("/health/db")
+def check_db():
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT 1")
+    result = cursor.fetchone()
+    conn.close()
 
-@app.get("/")
-def read_root():
-    return {"status": "API is running"}
+    return {"database": "connected", "result": result[0]}
