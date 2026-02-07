@@ -29,3 +29,34 @@ def insert_optin_message(phone_number: str, message_text: str):
 
     cursor.close()
     conn.close()
+
+def get_optin_messages():
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    query = """
+        SELECT 
+            id,
+            phone_number,
+            message_text,
+            optin_date,
+            created_at
+        FROM optin_messages
+        ORDER BY created_at DESC
+    """
+
+    cursor.execute(query)
+
+    columns = [column[0] for column in cursor.description]
+    rows = cursor.fetchall()
+
+    results = []
+    for row in rows:
+        results.append(dict(zip(columns, row)))
+
+    cursor.close()
+    conn.close()
+
+    return results
+
+

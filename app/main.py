@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from app.database import insert_optin_message
 from app.schemas import OptinMessageCreate
+from app.database import get_optin_messages
 
 app = FastAPI()
 
@@ -16,3 +17,8 @@ def create_optin(data: OptinMessageCreate):
         "status": "ok",
         "message": "Opt-in registrado com sucesso"
     }
+
+@app.get("/optin")
+def list_optins():
+    return get_optin_messages()
+
