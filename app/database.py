@@ -17,3 +17,19 @@ def get_connection():
     )
 
     return pyodbc.connect(connection_string)
+
+def insert_optin_message(phone_number: str, message_text: str):
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    query = """
+        INSERT INTO optin_messages (phone_number, message_text)
+        VALUES (?, ?)
+    """
+
+    cursor.execute(query, (phone_number, message_text))
+    conn.commit()
+
+    cursor.close()
+    conn.close()
+

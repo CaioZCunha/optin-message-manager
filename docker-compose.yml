@@ -14,6 +14,11 @@ services:
   api:
     build: .
     container_name: optin_api
+    environment:
+      DB_HOST: optin_sqlserver
+      DB_NAME: optin_manager
+      DB_USER: sa
+      DB_PASSWORD: YourStrong!Passw0rd
     depends_on:
       - db
     ports:
