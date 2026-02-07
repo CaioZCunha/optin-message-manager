@@ -1,22 +1,19 @@
 import pyodbc
-import os
+from app.config import settings
+
 
 def get_connection():
-    server = os.getenv("DB_HOST", "optin_sqlserver")
-    database = os.getenv("DB_NAME", "master")
-    username = os.getenv("DB_USER", "sa")
-    password = os.getenv("DB_PASSWORD", "YourStrong!Passw0rd")
-
     connection_string = (
-        "DRIVER={ODBC Driver 18 for SQL Server};"
-        f"SERVER={server};"
-        f"DATABASE={database};"
-        f"UID={username};"
-        f"PWD={password};"
+        f"DRIVER={{{settings.DB_DRIVER}}};"
+        f"SERVER={settings.DB_HOST};"
+        f"DATABASE={settings.DB_NAME};"
+        f"UID={settings.DB_USER};"
+        f"PWD={settings.DB_PASSWORD};"
         "TrustServerCertificate=yes;"
     )
 
     return pyodbc.connect(connection_string)
+
 
 def insert_optin_message(phone_number: str, message_text: str):
     conn = get_connection()
@@ -32,4 +29,3 @@ def insert_optin_message(phone_number: str, message_text: str):
 
     cursor.close()
     conn.close()
-

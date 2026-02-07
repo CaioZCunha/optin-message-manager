@@ -1,18 +1,8 @@
 from fastapi import FastAPI
-from app.database import get_connection, insert_optin_message
+from app.database import insert_optin_message
 from app.schemas import OptinMessageCreate
 
 app = FastAPI()
-
-@app.get("/health/db")
-def check_db():
-    conn = get_connection()
-    cursor = conn.cursor()
-    cursor.execute("SELECT 1")
-    result = cursor.fetchone()
-    conn.close()
-
-    return {"database": "connected", "result": result[0]}
 
 
 @app.post("/optin")
@@ -22,4 +12,7 @@ def create_optin(data: OptinMessageCreate):
         message_text=data.message_text
     )
 
-    return {"status": "success", "message": "Opt-in registrado com sucesso"}
+    return {
+        "status": "ok",
+        "message": "Opt-in registrado com sucesso"
+    }
