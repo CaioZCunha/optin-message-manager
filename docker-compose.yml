@@ -19,13 +19,14 @@ services:
       DB_NAME: optin_manager
       DB_USER: sa
       DB_PASSWORD: YourStrong!Passw0rd
+      DB_DRIVER: "ODBC Driver 18 for SQL Server"
     depends_on:
       - db
     ports:
       - "8000:8000"
     volumes:
       - .:/app
-    command: uvicorn app.main:app --host 0.0.0.0 --port 8000
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
     restart: always
 
 volumes:
